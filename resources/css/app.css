@@ -1,0 +1,117 @@
+@import 'tailwindcss';
+
+/* Tailwind に「どのファイルのクラスを使うか」を教える */
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../../config/tour.php';
+@source '../../app/**/*.php';
+
+/* アプリの色とフォント(シフトノートのテーマ:飲食店らしい温かいオレンジ) */
+@theme {
+    --font-sans: 'Zen Kaku Gothic New', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+    --color-ink: #1f2a37;
+    --color-paper: #fbf8f3;
+
+    --color-brand-50: #fdf3ec;
+    --color-brand-100: #f9e0cf;
+    --color-brand-500: #c0521d;
+    --color-brand-600: #a14418;
+    --color-brand-700: #7f3615;
+
+    --color-alert-50: #fdf0f0;
+    --color-alert-500: #c53b3b;
+    --color-alert-600: #a52f2f;
+}
+
+/*
+ * スマホ向けの表(class="rtable")
+ * 画面が狭いときは、表の1行を1枚のカードにして縦に並べる。
+ * ・見出しの代わりに、各セルの data-label を左に小さく出す
+ * ・rt-main … カードの見出し(名前など)  ・rt-actions … ボタン類
+ */
+@media (width < 40rem) {
+    .rtable thead {
+        display: none;
+    }
+
+    .rtable,
+    .rtable tbody,
+    .rtable tr:not(.hidden),
+    .rtable td {
+        display: block;
+        width: 100%;
+    }
+
+    .rtable tr:not(.hidden) {
+        padding: 0.75rem 1rem;
+    }
+
+    .rtable td {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.2rem 0 !important;
+        text-align: left !important;
+        white-space: normal !important;
+    }
+
+    .rtable td[data-label]::before {
+        content: attr(data-label);
+        flex: 0 0 4.5rem;
+        padding-top: 0.15rem;
+        font-size: 0.75rem;
+        color: var(--color-stone-500);
+    }
+
+    .rtable td > :is(div, form) {
+        flex: 1;
+    }
+
+    .rtable td.rt-main {
+        display: block;
+        font-size: 1rem;
+        padding-bottom: 0.35rem !important;
+    }
+
+    .rtable td.rt-actions {
+        flex-wrap: wrap;
+        padding-top: 0.6rem !important;
+    }
+
+    /* 指で押しやすい大きさにする */
+    .rtable td.rt-actions :is(button, a, select) {
+        min-height: 2.25rem;
+        padding: 0.4rem 0.75rem;
+        font-size: 0.85rem;
+    }
+
+    .rtable td[colspan] {
+        display: block;
+    }
+}
+
+/*
+ * Tailwind 4 では枠線の色やボタンのカーソルの初期値が変わったので、
+ * 以前(Tailwind 3)と同じ見た目になるようにそろえる
+ */
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-stone-200, currentColor);
+    }
+
+    button:not(:disabled),
+    [role='button']:not(:disabled) {
+        cursor: pointer;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        color: var(--color-stone-400);
+    }
+}
